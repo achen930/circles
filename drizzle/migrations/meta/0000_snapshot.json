@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2d3612cc-8769-4cca-b6a1-d7dd712e9086",
+  "id": "f3365264-a73a-470b-92d8-a95bdfc7b26d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
@@ -68,6 +68,13 @@
         }
       },
       "indexes": {
+        "users_id_unique": {
+          "name": "users_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        },
         "users_kinde_id_unique": {
           "name": "users_kinde_id_unique",
           "columns": [

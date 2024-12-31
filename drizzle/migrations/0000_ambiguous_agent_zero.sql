@@ -9,4 +9,5 @@ CREATE TABLE `users` (
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `users_id_unique` ON `users` (`id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `users_kinde_id_unique` ON `users` (`kinde_id`);
