@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1735626643209,
+      "tag": "0000_lean_clint_barton",
+      "breakpoints": true
+    }
+  ]
+}
