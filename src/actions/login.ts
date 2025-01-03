@@ -1,5 +1,7 @@
 "use server"
+import { getKindeClient, sessionManager } from "@/app/kinde"
 import { AuthUrlParams, type OAuthMethods } from "@/types/auth"
+import { redirect } from "next/navigation"
 
 export const emailLogin = async (email: string) => {
   if (!email) {
@@ -9,6 +11,7 @@ export const emailLogin = async (email: string) => {
     connection_id: process.env.KINDE_EMAIL_CONNECTION_ID!,
     login_hint: email,
   }
+  return await handleLogin(authUrlParams)
 }
 
 export const oAuthLogin = async (method: OAuthMethods) => {
@@ -36,4 +39,18 @@ export const oAuthLogin = async (method: OAuthMethods) => {
   const authUrlParams = {
     connection_id,
   }
+
+  return await handleLogin(authUrlParams)
+}
+
+const handleLogin = async (authUrlParams: AuthUrlParams) => {
+  const manager = sessionManager()
+  const state = crypto.randomUUID().toString()
+  await manager.setSessionItem("auth_state", state)
+
+  const loginUrl = await getKindeClient().login(manager, {
+    state,
+    authUrlParams,
+  })
+  return redirect(loginUrl.toString())
 }
