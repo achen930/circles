@@ -1,5 +1,4 @@
 "use server"
-
 import { AuthUrlParams, type OAuthMethods } from "@/types/auth"
 
 export const emailLogin = async (email: string) => {
@@ -32,7 +31,9 @@ export const oAuthLogin = async (method: OAuthMethods) => {
     }
   }
   if (!connection_id) {
-    return { error: "error setting method" }
+    return { error: "Failed to set OAuth method." }
   }
-  console.log(connection_id)
+  const authUrlParams = {
+    connection_id,
+  }
 }
