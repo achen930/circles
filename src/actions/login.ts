@@ -1,6 +1,10 @@
 "use server"
 import { getKindeClient, sessionManager } from "@/app/kinde"
+import { db } from "@/db"
+import { usersTable } from "@/db/schema/users"
 import { AuthUrlParams, type OAuthMethods } from "@/types/auth"
+import { type UserType } from "@kinde-oss/kinde-typescript-sdk"
+import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 
 export const emailLogin = async (email: string) => {
@@ -53,4 +57,44 @@ const handleLogin = async (authUrlParams: AuthUrlParams) => {
     authUrlParams,
   })
   return redirect(loginUrl.toString())
+}
+
+const login = async (kindeUser: UserType) => {
+  return await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.kindeId, kindeUser.id))
+    .get()
+}
+const register = async (kindeUser: UserType) => {
+  const newUser = await db
+    .insert(usersTable)
+    .values({
+      kindeId: kindeUser.id,
+      displayName: `${kindeUser.given_name} ${kindeUser.family_name}`.trim(),
+      firstName: kindeUser.given_name,
+      lastName: kindeUser.family_name,
+    })
+    .returning()
+    .get()
+  return newUser
+}
+
+export const loginOrRegister = async (kindeUser: UserType) => {
+  let user = await login(kindeUser)
+  if (!user) {
+    user = await register(kindeUser)
+  }
+  await sessionManager().setSessionItem("userId", user.id)
+}
+
+export const getUser = async () => {
+  "use server"
+  const userId = (await sessionManager().getSessionItem("userId")) as number
+  const userData = db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.id, userId))
+    .get()
+  return userData
 }

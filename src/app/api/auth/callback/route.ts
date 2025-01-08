@@ -1,6 +1,8 @@
 "use server"
 
+import { loginOrRegister } from "@/actions/login"
 import { getKindeClient, sessionManager } from "@/app/kinde"
+import { mightFail } from "might-fail"
 
 export async function GET(request: Request) {
   const cookies = new Map<string, string>(
@@ -31,7 +33,20 @@ export async function GET(request: Request) {
   }
 
   console.log("user", kindeUser)
-  return new Response("Hello, Next.js!", {
-    status: 200,
+
+  const [loginRegisterError, loginRegisterResult] = await mightFail(
+    loginOrRegister(kindeUser)
+  )
+  if (loginRegisterError) {
+    return new Response("Bad Request: failed to login / register", {
+      status: 400,
+    })
+  }
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/",
+    },
   })
 }
