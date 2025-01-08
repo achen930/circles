@@ -6,6 +6,7 @@ import { AuthUrlParams, type OAuthMethods } from "@/types/auth"
 import { type UserType } from "@kinde-oss/kinde-typescript-sdk"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
+import { NextResponse } from "next/server"
 
 export const emailLogin = async (email: string) => {
   if (!email) {
@@ -85,16 +86,21 @@ export const loginOrRegister = async (kindeUser: UserType) => {
   if (!user) {
     user = await register(kindeUser)
   }
-  await sessionManager().setSessionItem("userId", user.id)
+  await sessionManager().setSessionItem("SID", user.id)
 }
 
 export const getUser = async () => {
-  "use server"
-  const userId = (await sessionManager().getSessionItem("userId")) as number
+  const userId = (await sessionManager().getSessionItem("SID")) as number
   const userData = db
     .select()
     .from(usersTable)
     .where(eq(usersTable.id, userId))
     .get()
   return userData
+}
+
+export const logout = async () => {
+  "use server"
+  await sessionManager().destroySession()
+  return NextResponse.redirect(new URL("/login"))
 }

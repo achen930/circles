@@ -1,3 +1,4 @@
+import { decrypt, encrypt } from "@/lib/session"
 import {
   createKindeServerClient,
   GrantType,
@@ -21,14 +22,28 @@ export const sessionManager = (): SessionManager => ({
   async getSessionItem(key: string) {
     const cookieStore = await cookies()
     const value = cookieStore.get(key)?.value
-    return value ? decodeURIComponent(value) : null
+    let valueDecrypted
+    if (value) {
+      valueDecrypted = await decrypt(value)
+    }
+    return valueDecrypted
+      ? decodeURIComponent(valueDecrypted.cookieValue)
+      : null
   },
-  async setSessionItem(key: string, value: unknown) {
+  async setSessionItem(
+    key: string,
+    value: unknown,
+    expiration = new Date(Date.now() + 60 * 60 * 1000)
+  ) {
     const cookieValue = encodeURIComponent(
       typeof value === "string" ? value : JSON.stringify(value)
     )
+    const cookieValueEncrypted = await encrypt({
+      cookieValue,
+      expires: expiration,
+    })
     const cookieStore = await cookies()
-    cookieStore.set(key, cookieValue, {
+    cookieStore.set(key, cookieValueEncrypted, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

@@ -32,8 +32,6 @@ export async function GET(request: Request) {
     kindeUser.given_name = ""
   }
 
-  console.log("user", kindeUser)
-
   const [loginRegisterError, loginRegisterResult] = await mightFail(
     loginOrRegister(kindeUser)
   )
