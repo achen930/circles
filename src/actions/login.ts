@@ -100,7 +100,6 @@ export const getUser = async () => {
 }
 
 export const logout = async () => {
-  "use server"
   await sessionManager().destroySession()
-  return NextResponse.redirect(new URL("/login"))
+  return redirect("/login")
 }

@@ -51,14 +51,7 @@ export const sessionManager = (): SessionManager => ({
     })
   },
   async removeSessionItem(key: string) {
-    const cookieStore = await cookies()
-    cookieStore.set(key, "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 0,
-    })
+    ;(await cookies()).delete(key)
   },
   async destroySession() {
     const reqHeaders = await headers()
