@@ -15,11 +15,8 @@ export const userCirclesTable = sqliteTable(
   },
   (userCirclesTable) => {
     return {
-      pk: primaryKey({
-        columns: [userCirclesTable.userId, userCirclesTable.circleId],
-      }),
-      userCircleId: primaryKey({
-        name: "user_circle_id",
+      id: primaryKey({
+        name: "id",
         columns: [userCirclesTable.userId, userCirclesTable.circleId],
       }),
     }
