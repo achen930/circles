@@ -30,18 +30,16 @@ export const sessionManager = (): SessionManager => ({
       ? decodeURIComponent(valueDecrypted.cookieValue)
       : null
   },
-  async setSessionItem(
-    key: string,
-    value: unknown,
-    expiration = new Date(Date.now() + 60 * 60 * 1000)
-  ) {
+  async setSessionItem(key: string, value: unknown) {
     const cookieValue = encodeURIComponent(
       typeof value === "string" ? value : JSON.stringify(value)
     )
-    const cookieValueEncrypted = await encrypt({
-      cookieValue,
-      expires: expiration,
-    })
+    const cookieValueEncrypted = await encrypt(
+      {
+        cookieValue,
+      },
+      key == "refresh_token" ? "1 week" : "10 seconds"
+    )
     const cookieStore = await cookies()
     cookieStore.set(key, cookieValueEncrypted, {
       httpOnly: true,

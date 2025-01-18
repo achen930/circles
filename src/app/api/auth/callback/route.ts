@@ -40,7 +40,7 @@ export async function GET(request: Request) {
       status: 400,
     })
   }
-
+  manager.removeSessionItem("auth_state")
   return new Response(null, {
     status: 302,
     headers: {
