@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@kinde-oss/kinde-typescript-sdk": "^2.9.1",
     "@radix-ui/react-slot": "^1.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
+    "jose": "^5.9.6",
     "lucide-react": "^0.469.0",
+    "might-fail": "^0.7.3",
     "next": "15.1.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
