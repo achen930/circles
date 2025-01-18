@@ -13,12 +13,14 @@ export const userCirclesTable = sqliteTable(
       .references(() => circlesTable.id, { onDelete: "cascade" }),
     mod: integer("mod", { mode: "boolean" }).notNull().default(false),
   },
-  (table) => {
+  (userCirclesTable) => {
     return {
-      pk: primaryKey({ columns: [table.userId, table.circleId] }),
+      pk: primaryKey({
+        columns: [userCirclesTable.userId, userCirclesTable.circleId],
+      }),
       userCircleId: primaryKey({
         name: "user_circle_id",
-        columns: [table.userId, table.circleId],
+        columns: [userCirclesTable.userId, userCirclesTable.circleId],
       }),
     }
   }

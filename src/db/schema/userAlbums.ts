@@ -12,12 +12,14 @@ export const usersAlbumTable = sqliteTable(
       .notNull()
       .references(() => albumsTable.id),
   },
-  (table) => {
+  (usersAlbumTable) => {
     return {
-      pk: primaryKey({ columns: [table.userId, table.albumId] }),
+      pk: primaryKey({
+        columns: [usersAlbumTable.userId, usersAlbumTable.albumId],
+      }),
       userAlbumId: primaryKey({
         name: "user_album_id",
-        columns: [table.userId, table.albumId],
+        columns: [usersAlbumTable.userId, usersAlbumTable.albumId],
       }),
     }
   }
