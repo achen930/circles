@@ -1,9 +1,970 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f3365264-a73a-470b-92d8-a95bdfc7b26d",
+  "id": "71948402-1277-4e7f-bf5b-9c1e1bb67a9d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "acitivites": {
+      "name": "acitivites",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "album_id": {
+          "name": "album_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "comment_id": {
+          "name": "comment_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "repliedToUserId": {
+          "name": "repliedToUserId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "like_id": {
+          "name": "like_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "photo_id": {
+          "name": "photo_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "acitivites_id_unique": {
+          "name": "acitivites_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "acitivites_id_users_id_fk": {
+          "name": "acitivites_id_users_id_fk",
+          "tableFrom": "acitivites",
+          "tableTo": "users",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "acitivites_album_id_albums_id_fk": {
+          "name": "acitivites_album_id_albums_id_fk",
+          "tableFrom": "acitivites",
+          "tableTo": "albums",
+          "columnsFrom": [
+            "album_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "acitivites_comment_id_comments_id_fk": {
+          "name": "acitivites_comment_id_comments_id_fk",
+          "tableFrom": "acitivites",
+          "tableTo": "comments",
+          "columnsFrom": [
+            "comment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "acitivites_repliedToUserId_users_id_fk": {
+          "name": "acitivites_repliedToUserId_users_id_fk",
+          "tableFrom": "acitivites",
+          "tableTo": "users",
+          "columnsFrom": [
+            "repliedToUserId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "acitivites_like_id_likes_id_fk": {
+          "name": "acitivites_like_id_likes_id_fk",
+          "tableFrom": "acitivites",
+          "tableTo": "likes",
+          "columnsFrom": [
+            "like_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "acitivites_photo_id_photos_id_fk": {
+          "name": "acitivites_photo_id_photos_id_fk",
+          "tableFrom": "acitivites",
+          "tableTo": "photos",
+          "columnsFrom": [
+            "photo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "albums": {
+      "name": "albums",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "owner_id": {
+          "name": "owner_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "circle_id": {
+          "name": "circle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "like_count": {
+          "name": "like_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "albums_id_unique": {
+          "name": "albums_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "albums_owner_id_users_id_fk": {
+          "name": "albums_owner_id_users_id_fk",
+          "tableFrom": "albums",
+          "tableTo": "users",
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "albums_circle_id_circles_id_fk": {
+          "name": "albums_circle_id_circles_id_fk",
+          "tableFrom": "albums",
+          "tableTo": "circles",
+          "columnsFrom": [
+            "circle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "circleInvites": {
+      "name": "circleInvites",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "circle_id": {
+          "name": "circle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "circleInvites_id_unique": {
+          "name": "circleInvites_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "circleInvites_user_id_users_id_fk": {
+          "name": "circleInvites_user_id_users_id_fk",
+          "tableFrom": "circleInvites",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "circleInvites_circle_id_circles_id_fk": {
+          "name": "circleInvites_circle_id_circles_id_fk",
+          "tableFrom": "circleInvites",
+          "tableTo": "circles",
+          "columnsFrom": [
+            "circle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "circles": {
+      "name": "circles",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "owner_id": {
+          "name": "owner_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "picture": {
+          "name": "picture",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_public": {
+          "name": "is_public",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        }
+      },
+      "indexes": {
+        "circles_id_unique": {
+          "name": "circles_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "circles_owner_id_users_id_fk": {
+          "name": "circles_owner_id_users_id_fk",
+          "tableFrom": "circles",
+          "tableTo": "users",
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "comments": {
+      "name": "comments",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "album_id": {
+          "name": "album_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "like_count": {
+          "name": "like_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "comments_id_unique": {
+          "name": "comments_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "comments_user_id_users_id_fk": {
+          "name": "comments_user_id_users_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "comments_album_id_albums_id_fk": {
+          "name": "comments_album_id_albums_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "albums",
+          "columnsFrom": [
+            "album_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "comments_parent_id_comments_id_fk": {
+          "name": "comments_parent_id_comments_id_fk",
+          "tableFrom": "comments",
+          "tableTo": "comments",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "friendRequests": {
+      "name": "friendRequests",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "requester_id": {
+          "name": "requester_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "requestee_id": {
+          "name": "requestee_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "friendRequests_id_unique": {
+          "name": "friendRequests_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "friendRequests_requester_id_users_id_fk": {
+          "name": "friendRequests_requester_id_users_id_fk",
+          "tableFrom": "friendRequests",
+          "tableTo": "users",
+          "columnsFrom": [
+            "requester_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "friendRequests_requestee_id_users_id_fk": {
+          "name": "friendRequests_requestee_id_users_id_fk",
+          "tableFrom": "friendRequests",
+          "tableTo": "users",
+          "columnsFrom": [
+            "requestee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "friends": {
+      "name": "friends",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "friend_one_id": {
+          "name": "friend_one_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "friend_two_id": {
+          "name": "friend_two_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "friends_id_unique": {
+          "name": "friends_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "friends_friend_one_id_users_id_fk": {
+          "name": "friends_friend_one_id_users_id_fk",
+          "tableFrom": "friends",
+          "tableTo": "users",
+          "columnsFrom": [
+            "friend_one_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "friends_friend_two_id_users_id_fk": {
+          "name": "friends_friend_two_id_users_id_fk",
+          "tableFrom": "friends",
+          "tableTo": "users",
+          "columnsFrom": [
+            "friend_two_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "likes": {
+      "name": "likes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "album_id": {
+          "name": "album_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "comment_id": {
+          "name": "comment_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
+        }
+      },
+      "indexes": {
+        "likes_id_unique": {
+          "name": "likes_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "likes_user_id_users_id_fk": {
+          "name": "likes_user_id_users_id_fk",
+          "tableFrom": "likes",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "likes_album_id_albums_id_fk": {
+          "name": "likes_album_id_albums_id_fk",
+          "tableFrom": "likes",
+          "tableTo": "albums",
+          "columnsFrom": [
+            "album_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "likes_comment_id_comments_id_fk": {
+          "name": "likes_comment_id_comments_id_fk",
+          "tableFrom": "likes",
+          "tableTo": "comments",
+          "columnsFrom": [
+            "comment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "photos": {
+      "name": "photos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "album_id": {
+          "name": "album_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "src": {
+          "name": "src",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "photos_id_unique": {
+          "name": "photos_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "photos_user_id_users_id_fk": {
+          "name": "photos_user_id_users_id_fk",
+          "tableFrom": "photos",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "photos_album_id_albums_id_fk": {
+          "name": "photos_album_id_albums_id_fk",
+          "tableFrom": "photos",
+          "tableTo": "albums",
+          "columnsFrom": [
+            "album_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "tokens": {
+      "name": "tokens",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "circle_id": {
+          "name": "circle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() + 7 * 24 * 60 *60)"
+        }
+      },
+      "indexes": {
+        "tokens_id_unique": {
+          "name": "tokens_id_unique",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "tokens_creator_id_users_id_fk": {
+          "name": "tokens_creator_id_users_id_fk",
+          "tableFrom": "tokens",
+          "tableTo": "users",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tokens_circle_id_circles_id_fk": {
+          "name": "tokens_circle_id_circles_id_fk",
+          "tableFrom": "tokens",
+          "tableTo": "circles",
+          "columnsFrom": [
+            "circle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "userCircle": {
+      "name": "userCircle",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "circle_id": {
+          "name": "circle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mod": {
+          "name": "mod",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "userCircle_user_id_users_id_fk": {
+          "name": "userCircle_user_id_users_id_fk",
+          "tableFrom": "userCircle",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "userCircle_circle_id_circles_id_fk": {
+          "name": "userCircle_circle_id_circles_id_fk",
+          "tableFrom": "userCircle",
+          "tableTo": "circles",
+          "columnsFrom": [
+            "circle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "id": {
+          "columns": [
+            "user_id",
+            "circle_id"
+          ],
+          "name": "id"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "users": {
       "name": "users",
       "columns": {
@@ -16,6 +977,13 @@
         },
         "kinde_id": {
           "name": "kinde_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "username": {
+          "name": "username",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -79,6 +1047,13 @@
           "name": "users_kinde_id_unique",
           "columns": [
             "kinde_id"
+          ],
+          "isUnique": true
+        },
+        "users_username_unique": {
+          "name": "users_username_unique",
+          "columns": [
+            "username"
           ],
           "isUnique": true
         }

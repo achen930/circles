@@ -67,14 +67,31 @@ const login = async (kindeUser: UserType) => {
     .where(eq(usersTable.kindeId, kindeUser.id))
     .get()
 }
-const register = async (kindeUser: UserType) => {
+
+const generateUsername = (firstName: string, lastName: string): string => {
+  const randomDigits = Math.floor(1000 + Math.random() * 9000)
+  return `${firstName}${lastName}${randomDigits}`
+}
+
+const isUsernameUnique = async (username: string): Promise<boolean> => {
+  const existingUser = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.username, username))
+    .get()
+  return !existingUser
+}
+
+const register = async (kindeUser: UserType, username: string) => {
   const newUser = await db
     .insert(usersTable)
     .values({
       kindeId: kindeUser.id,
+      username,
       displayName: `${kindeUser.given_name} ${kindeUser.family_name}`.trim(),
       firstName: kindeUser.given_name,
       lastName: kindeUser.family_name,
+      profilePicture: kindeUser.picture || "",
     })
     .returning()
     .get()
@@ -84,7 +101,15 @@ const register = async (kindeUser: UserType) => {
 export const loginOrRegister = async (kindeUser: UserType) => {
   let user = await login(kindeUser)
   if (!user) {
-    user = await register(kindeUser)
+    let username = generateUsername(kindeUser.given_name, kindeUser.family_name)
+    let isUnique = await isUsernameUnique(username)
+
+    while (!isUnique) {
+      username = generateUsername(kindeUser.given_name, kindeUser.family_name)
+      isUnique = await isUsernameUnique(username)
+    }
+
+    user = await register(kindeUser, username)
   }
   await sessionManager().setSessionItem("SID", user.id)
 }
