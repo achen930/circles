@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    DM Sans,
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 @layer base {
@@ -69,4 +73,16 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../../public/fonts/DMSans-VariableFont_opsz\,wght.ttf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "DM Sans Italic";
+  src: url("../../public/fonts/DMSans-Italic-VariableFont_opsz\,wght.ttf")
+    format("opentype");
 }

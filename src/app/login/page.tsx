@@ -1,5 +1,6 @@
 "use client"
 import { emailLogin, oAuthLogin } from "@/actions/login"
+import Logo from "@/components/icons/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { OAuthMethods } from "@/types/auth"
@@ -29,7 +30,12 @@ export default function Login() {
   return (
     <>
       <div className="px-7 flex flex-col gap-4 py-7 min-w-[430px]">
-        <div className="rounded-full bg-blue-400 w-[240px] h-[240px] self-center" />
+        <div className="flex flex-col justify-center items-center self-center">
+          <Logo />
+          <h1 className="font-DMSansItalic text-[44px] font-medium text-accent-blue">
+            CIRCLES.
+          </h1>
+        </div>
         {error && (
           <div
             className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
@@ -51,7 +57,10 @@ export default function Login() {
               className="rounded-full"
             />
           </div>
-          <Button className="rounded-full w-full" type="submit">
+          <Button
+            className="rounded-full w-full h-11 bg-accent-blue"
+            type="submit"
+          >
             Login
           </Button>
         </form>
