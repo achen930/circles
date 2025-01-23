@@ -60,7 +60,7 @@ export default function Login() {
             />
           </div>
           <Button
-            className="rounded-full w-full h-11 bg-accent-blue mb-6"
+            className="rounded-full w-full h-11 bg-accent-blue mb-2"
             type="submit"
           >
             Login
