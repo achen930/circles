@@ -51,6 +51,7 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
         "accent-blue": "#0044CC",
+        "text-black": "#0E0E0E",
       },
       borderRadius: {
         lg: "var(--radius)",
