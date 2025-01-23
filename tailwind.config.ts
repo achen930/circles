@@ -52,6 +52,10 @@ export default {
         },
         "accent-blue": "#0044CC",
         "text-black": "#0E0E0E",
+        "dark-gray": "#737373",
+      },
+      fontSize: {
+        17: "17px",
       },
       borderRadius: {
         lg: "var(--radius)",

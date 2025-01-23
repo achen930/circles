@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { OAuthMethods } from "@/types/auth"
 import { useState } from "react"
+import Link from "next/link"
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -152,9 +153,9 @@ export default function Login() {
         <div>
           <p className="text-center text-sm text-text-black">
             Don't have an account?{" "}
-            <a href="#" className="text-accent-blue">
+            <Link href="/registration" className="text-accent-blue">
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </div>
