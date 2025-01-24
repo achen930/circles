@@ -73,7 +73,7 @@ const generateUsername = (firstName: string, lastName: string): string => {
   return `${firstName}${lastName}${randomDigits}`
 }
 
-const isUsernameUnique = async (username: string): Promise<boolean> => {
+export const isUsernameUnique = async (username: string): Promise<boolean> => {
   const existingUser = await db
     .select()
     .from(usersTable)

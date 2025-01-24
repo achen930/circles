@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import React, { useState, useEffect } from "react"
 import { useHeader } from "@/components/shared/headerContext"
+import { isUsernameUnique } from "@/actions/login"
 
 export default function SignUp() {
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+  const [username, setUsername] = useState("")
   const { setHeaderProps } = useHeader()
 
   useEffect(() => {
@@ -34,6 +36,13 @@ export default function SignUp() {
           setFirstName={setFirstName}
           lastName={lastName}
           setLastName={setLastName}
+          nextStep={nextStep}
+        />
+      )}
+      {currentStep === 3 && (
+        <Step3
+          username={username}
+          setUsername={setUsername}
           nextStep={nextStep}
         />
       )}
@@ -145,6 +154,74 @@ function Step2({
           Next
         </Button>
       </div>
+    </div>
+  )
+}
+
+function Step3({
+  username,
+  setUsername,
+  nextStep,
+}: {
+  username: string
+  setUsername: (value: string) => void
+  nextStep: () => void
+}) {
+  const [isUsernameValid, setIsUsernameValid] = useState(true)
+  const [errorMessage, setErrorMessage] = useState<string>("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setUsername(event.currentTarget.value)
+  }
+
+  const handleNextStep = async () => {
+    setIsLoading(true)
+    const isUnique = await isUsernameUnique(username)
+
+    if (!isUnique) {
+      setIsUsernameValid(false)
+      setErrorMessage("Username is already taken. Please choose another.")
+    } else {
+      setIsUsernameValid(true)
+      setErrorMessage("")
+      nextStep()
+    }
+
+    setIsLoading(false)
+  }
+
+  return (
+    <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
+      <div>
+        <h1 className="font-medium text-4xl mb-2">Create a username</h1>
+        <p className="text-17 text-black/75">
+          Add a username. You can change this at any time.
+        </p>
+        <div className="flex flex-col gap-4 mt-[81px]">
+          <label htmlFor="username">Username</label>
+          {!isUsernameValid && (
+            <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+          )}
+          <Input
+            id="username"
+            name="username"
+            type="text"
+            value={username}
+            onChange={handleUsernameChange}
+            placeholder="Username"
+            className="rounded-full"
+          />
+        </div>
+      </div>
+
+      <Button
+        className="rounded-full w-full h-11 bg-accent-blue mb-2"
+        onClick={handleNextStep}
+        disabled={!username || isLoading}
+      >
+        {isLoading ? "Checking..." : "Next"}
+      </Button>
     </div>
   )
 }
