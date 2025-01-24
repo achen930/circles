@@ -5,7 +5,7 @@ import {
   useContext,
   useState,
   ReactNode,
-  useEffect,
+  useCallback,
 } from "react"
 
 type HeaderContextType = {
@@ -20,24 +20,32 @@ type HeaderContextType = {
 const HeaderContext = createContext<HeaderContextType | undefined>(undefined)
 
 export const HeaderProvider = ({ children }: { children: ReactNode }) => {
-  console.log("hp")
-  const [pageName, setPageName] = useState<string | null>(null)
-  const [backAction, setBackAction] = useState<(() => void) | string | null>(
-    null
+  const [state, setState] = useState({
+    pageName: null as string | null,
+    backAction: null as (() => void) | string | null,
+  })
+
+  const setHeaderProps = useCallback(
+    (props: {
+      pageName?: string | null
+      backAction?: (() => void) | string | null
+    }) => {
+      setState((prevState) => ({
+        pageName: props.pageName ?? prevState.pageName,
+        backAction: props.backAction ?? prevState.backAction,
+      }))
+    },
+    []
   )
 
-  const setHeaderProps = (props: {
-    pageName?: string | null
-    backAction?: (() => void) | string | null
-  }) => {
-    if (props.pageName !== pageName || props.backAction !== backAction) {
-      setPageName(props.pageName ?? null)
-      setBackAction(props.backAction ?? null)
-    }
-  }
-
   return (
-    <HeaderContext.Provider value={{ pageName, backAction, setHeaderProps }}>
+    <HeaderContext.Provider
+      value={{
+        pageName: state.pageName,
+        backAction: state.backAction,
+        setHeaderProps,
+      }}
+    >
       {children}
     </HeaderContext.Provider>
   )

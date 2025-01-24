@@ -1,43 +1,32 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import { useHeader } from "@/components/shared/headerContext"
 
 export default function SignUp() {
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
-  const [emailConfirmation, setEmailConfirmation] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const { setHeaderProps } = useHeader()
-
-  const nextStep = () => {
-    setCurrentStep((prev) => prev + 1)
-  }
-
-  const previousStep = () => {
-    setCurrentStep((prev) => prev - 1)
-  }
 
   useEffect(() => {
     if (currentStep === 1) {
       setHeaderProps({ backAction: "/" })
     } else if (currentStep === 2) {
-      setHeaderProps({ backAction: previousStep })
+      setHeaderProps({ backAction: () => setCurrentStep(1) })
     }
-  }, [currentStep])
+  }, [currentStep, setHeaderProps])
+
+  const nextStep = () => {
+    setCurrentStep((prev) => prev + 1)
+  }
 
   return (
     <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
       {currentStep === 1 && (
-        <Step1
-          email={email}
-          setEmail={setEmail}
-          emailConfirmation={emailConfirmation}
-          setEmailConfirmation={setEmailConfirmation}
-          nextStep={nextStep}
-        />
+        <Step1 email={email} setEmail={setEmail} nextStep={nextStep} />
       )}
       {currentStep === 2 && (
         <Step2
@@ -55,24 +44,14 @@ export default function SignUp() {
 function Step1({
   email,
   setEmail,
-  emailConfirmation,
-  setEmailConfirmation,
   nextStep,
 }: {
   email: string
   setEmail: (value: string) => void
-  emailConfirmation: string
-  setEmailConfirmation: (value: string) => void
   nextStep: () => void
 }) {
   const handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value)
-  }
-
-  const handleEmailConfirmationChange = (
-    event: React.FormEvent<HTMLInputElement>
-  ) => {
-    setEmailConfirmation(event.currentTarget.value)
   }
 
   return (
@@ -94,22 +73,12 @@ function Step1({
             placeholder="Email"
             className="rounded-full"
           ></Input>
-          <label htmlFor="emailConfirmation">Confirm Email</label>
-          <Input
-            id="emailConfirmation"
-            name="emailConfirmation"
-            type="email"
-            value={emailConfirmation}
-            onChange={handleEmailConfirmationChange}
-            placeholder="Email"
-            className="rounded-full"
-          ></Input>
         </div>
       </div>
       <Button
         className="rounded-full w-full h-11 bg-accent-blue mb-2"
         onClick={nextStep}
-        disabled={!email || email !== emailConfirmation}
+        disabled={!email}
       >
         Next
       </Button>
