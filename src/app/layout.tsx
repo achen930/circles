@@ -17,9 +17,7 @@ export default function RootLayout({
     <html lang="en" className="h-full w-full">
       <body className="font-DMSans antialiased h-full w-full flex flex-col">
         <HeaderProvider>
-          <div className="h-[105px]">
-            <Header />
-          </div>
+          <Header />
           <div className="flex-1 overflow-y-scroll">{children}</div>
         </HeaderProvider>
       </body>

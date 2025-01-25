@@ -8,13 +8,12 @@ export default function Header() {
 
   const pathName = usePathname()
 
-  if (pathName === "/login") {
-    return null
-  }
+  if (pathName === "/login") return null
+
   console.log(backAction)
 
   return (
-    <div className="flex items-center justify-between w-full h-[105px] px-4">
+    <header className="flex items-center justify-between w-full h-[105px] px-4">
       {backAction &&
         (typeof backAction === "string" ? (
           <Link href={backAction} aria-label="Go Back">
@@ -54,6 +53,6 @@ export default function Header() {
           </button>
         ))}
       <h1 className="text-lg font-bold">{pageName}</h1>
-    </div>
+    </header>
   )
 }

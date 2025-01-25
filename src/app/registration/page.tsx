@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useHeader } from "@/components/shared/headerContext"
 import { isUsernameUnique } from "@/actions/login"
 
@@ -11,13 +11,20 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [username, setUsername] = useState("")
+  const [profilePicture, setProfilePicture] = useState("")
   const { setHeaderProps } = useHeader()
 
   useEffect(() => {
-    if (currentStep === 1) {
-      setHeaderProps({ backAction: "/" })
-    } else if (currentStep === 2) {
-      setHeaderProps({ backAction: () => setCurrentStep(1) })
+    const stepActions: Record<number, { backAction: string | (() => void) }> = {
+      1: { backAction: "/" },
+      2: { backAction: () => setCurrentStep(1) },
+      3: { backAction: () => setCurrentStep(2) },
+      4: { backAction: () => setCurrentStep(3) },
+      5: { backAction: () => setCurrentStep(4) },
+    }
+
+    if (currentStep in stepActions) {
+      setHeaderProps(stepActions[currentStep])
     }
   }, [currentStep, setHeaderProps])
 
@@ -46,6 +53,14 @@ export default function SignUp() {
           nextStep={nextStep}
         />
       )}
+      {currentStep === 4 && (
+        <Step4
+          profilePicture={profilePicture}
+          setProfilePicture={setProfilePicture}
+          nextStep={nextStep}
+        />
+      )}
+      {currentStep === 5 && <Step5 profilePicture={profilePicture} />}
     </div>
   )
 }
@@ -65,13 +80,13 @@ function Step1({
 
   return (
     <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
-      <div>
+      <div className="min-h-[256px]">
         <h1 className="font-medium text-4xl mb-2">Enter your Email</h1>
-        <p className="text-17 text-black/75">
+        <p className="text-17 text-black/75 h-[51px]">
           Enter the email where you can be contacted. No one will see this on
           your profile.
         </p>
-        <div className="flex flex-col gap-4 mt-[81px]">
+        <div className="flex flex-col gap-2 mt-[81px]">
           <label htmlFor="email">Email</label>
           <Input
             id="email"
@@ -85,7 +100,7 @@ function Step1({
         </div>
       </div>
       <Button
-        className="rounded-full w-full h-11 bg-accent-blue mb-2"
+        className="rounded-full w-full h-11 bg-accent-blue"
         onClick={nextStep}
         disabled={!email}
       >
@@ -118,12 +133,12 @@ function Step2({
 
   return (
     <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
-      <div>
+      <div className="min-h-[256px]">
         <h1 className="font-medium text-4xl mb-2">What's your name?</h1>
-        <p className="text-17 text-black/75">
+        <p className="text-17 text-black/75 h-[51px]">
           Add your name so friends can find you easier.
         </p>
-        <div className="flex flex-col gap-4 mt-[81px]">
+        <div className="flex flex-col gap-2 mt-[81px]">
           <label htmlFor="firstName">First Name</label>
           <Input
             id="firstName"
@@ -146,7 +161,7 @@ function Step2({
           ></Input>
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-2">
+      <div className="flex flex-col justify-between">
         <Button
           className="rounded-full w-full h-11 bg-accent-blue"
           onClick={nextStep}
@@ -193,12 +208,12 @@ function Step3({
 
   return (
     <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
-      <div>
+      <div className="min-h-[256px]">
         <h1 className="font-medium text-4xl mb-2">Create a username</h1>
-        <p className="text-17 text-black/75">
+        <p className="text-17 text-black/75 h-[51px]">
           Add a username. You can change this at any time.
         </p>
-        <div className="flex flex-col gap-4 mt-[81px]">
+        <div className="flex flex-col gap-2 mt-[81px]">
           <label htmlFor="username">Username</label>
           {!isUsernameValid && (
             <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
@@ -216,12 +231,120 @@ function Step3({
       </div>
 
       <Button
-        className="rounded-full w-full h-11 bg-accent-blue mb-2"
+        className="rounded-full w-full h-11 bg-accent-blue"
         onClick={handleNextStep}
         disabled={!username || isLoading}
       >
         {isLoading ? "Checking..." : "Next"}
       </Button>
+    </div>
+  )
+}
+
+function Step4({
+  profilePicture,
+  setProfilePicture,
+  nextStep,
+}: {
+  profilePicture: string
+  setProfilePicture: (value: string) => void
+  nextStep: () => void
+}) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleAddPictureClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
+  const handleProfilePictureChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      // some file upload
+    }
+  }
+
+  return (
+    <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
+      <div className="min-h-[256px]">
+        <h1 className="font-medium text-4xl mb-2">Add a profile picture</h1>
+        <p className="text-17 text-black/75 h-[51px]">
+          Add a profile picture so your friends know it's you. Everyone will be
+          able to see your picture.
+        </p>
+        <div className="flex flex-col items-center gap-2 mt-[81px]">
+          <input
+            id="profilePicture"
+            name="profilePicture"
+            type="file"
+            ref={fileInputRef}
+            onChange={handleProfilePictureChange}
+            accept="image/*"
+            className="hidden"
+          />
+          <img
+            src={profilePicture || "/images/placeholder-profile.png"}
+            alt="Profile Picture Preview"
+            className="w-[180px] h-[176px] object-cover rounded-full"
+          />
+        </div>
+      </div>
+      <div className="flex flex-col justify-between gap-2">
+        <Button
+          className="rounded-full w-full h-11 bg-accent-blue"
+          onClick={handleAddPictureClick}
+        >
+          Add Picture
+        </Button>
+        <Button
+          className="rounded-full w-full h-11 bg-white text-dark-gray border border-dark-gray"
+          onClick={nextStep}
+        >
+          Skip
+        </Button>
+      </div>
+    </div>
+  )
+}
+function Step5({
+  profilePicture,
+  handleRegistration,
+  handleChangePhoto,
+}: {
+  profilePicture: string
+  handleRegistration: () => void
+  handleChangePhoto: () => void
+}) {
+  return (
+    <div className="px-2 flex flex-col gap-4 py-2 min-w-[360px] h-full justify-between">
+      <div className="min-h-[256px]">
+        <h1 className="font-medium text-4xl mb-2">Profile Picture Added</h1>
+        <span className="block text-17 text-black/75 h-[51px]">&nbsp;</span>
+        <div className="flex flex-col items-center gap-2 mt-[81px]">
+          <img
+            src={profilePicture || "/images/placeholder-profile.png"}
+            alt="Profile Picture Preview"
+            className="w-[180px] h-[176px] object-cover rounded-full"
+          />
+        </div>
+      </div>
+      <div className="flex flex-col justify-between gap-2">
+        <Button
+          className="rounded-full w-full h-11 bg-accent-blue"
+          onClick={handleRegistration}
+        >
+          Done
+        </Button>
+        <Button
+          className="rounded-full w-full h-11 bg-white text-dark-gray border border-dark-gray"
+          onClick={handleChangePhoto}
+        >
+          Change Photo
+        </Button>
+      </div>
     </div>
   )
 }
